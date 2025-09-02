@@ -57,3 +57,39 @@
 (defn -main []
   (println "Available offers")
   (check-offers products VALID_COUPON 60000))
+
+;;#########################################
+;; ########### solution from tutorial! ####
+;;#########################################
+
+
+(defn isCodeValid 
+  [code]
+  [defstruct coupon :Name :Discount]
+  (def validCoupon (struct coupon "20Percent" 0.8))
+  (if (= code (:Name validCoupon))
+    true
+    false))
+
+(defn getCarPrices
+  [budget code]
+  (def cars {"bmw" 60000 "ferrari" 100000 "fiat" 20000})
+  (if (isCodeValid code)
+    (do 
+      (println "The code is valid")
+      (def discount (:Discount (validCoupon)))
+      (doseq [car cars]
+        (def carType (first car))
+        (def carPrice (last car))
+        (def discountedPrice (* carPrice discount))
+        (if (<= discountedPrice budget)
+          (println carType ": " discountedPrice))))
+    (do
+      (println "Invalid coupon code")
+      (doseq [car cars]
+        (def carType (first car))
+        (def carPrice (last car))
+        (if (<= carPrice budget)
+          (println carType ": " carPrice))))
+    ))
+(getCarPrices 60000 "20Percent")
